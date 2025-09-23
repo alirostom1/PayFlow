@@ -58,4 +58,13 @@ public abstract class Subscription {
     public void setStatus(Sstatus status){
         this.status = status;
     }
+    public String toString(){
+        return "Subscription Details: \n" + 
+        "id: "+ this.id +" \n" +
+        "Service name: "+ this.service + "\n"+
+        "price: " + this.price + "\n" +
+        "Start date: " + this.startDate + "\n" +
+        "End date: " + this.endDate + "\n" +
+        "Status: " + this.status.toString().toLowerCase() + "\n";
+    }
 }
