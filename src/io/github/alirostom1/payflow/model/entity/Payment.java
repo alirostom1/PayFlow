@@ -49,4 +49,10 @@ public class Payment {
     public void setStatus(Pstatus status){
         this.status = status;
     }
+    public String getSubId(){
+        return this.subId;
+    }
+    public void setSubId(String subId){
+        this.subId = subId;
+    }
 }
