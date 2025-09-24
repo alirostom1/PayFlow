@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface Repository<E> {
     boolean create(E e) throws SQLException;
-    Optional<E> findById(String id);
-    List<E> findAll();
-    boolean update(E e) throws SQLException;
+    Optional<E> findById(String id) throws SQLException;
+    List<E> findAll() throws SQLException;
+    boolean updateStatus(E e) throws SQLException;
 }
