@@ -11,6 +11,12 @@ public class FixedSub extends Subscription{
         super(id,service,price,startDate,endDate,status);
         this.monthsEngaged = monthsEngaged;
     }
+    public int getMonthsEngaged(){
+        return this.getMonthsEngaged();
+    }
+    public void setMonthsEngaged(int monthsEngaged){
+        this.monthsEngaged = monthsEngaged;
+    }
     public String toString(){
         return super.toString() + 
         "subscription type: fixed";
