@@ -67,11 +67,11 @@ Elle permet de suivre les échéances, détecter rapidement les paiements manqu�
 ## Exemple d’exécution
 
 ```bash
-java -cp "dist/payflow.jar:src/io/github/alirostom1/payflow/drivers/mysql-connector-j-9.4.0.jar" io.github.alirostom1.payflow.Main
+java -cp "dist/payflow.jar:src/io/github/alirostom1/payflow/drivers/mysql-connector-j-9.3.0.jar" io.github.alirostom1.payflow.Main
 ```
 
 ---
 
-**Diagramme de classe et scripts de lancement à venir.**
-
+**Diagramme de classe**
+![class diagram](https://github.com/alirostom1/PayFlow/blob/develop/docs/diagrams/payflow.png)
 ---
