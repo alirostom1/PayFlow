@@ -52,7 +52,7 @@ public abstract class Subscription {
     public void setEndDate(LocalDateTime endDate){
         this.endDate = endDate;
     }
-    public Sstatus geStatus(){
+    public Sstatus getStatus(){
         return this.status;
     }
     public void setStatus(Sstatus status){
