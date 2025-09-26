@@ -37,6 +37,9 @@ public class Payment {
     public LocalDateTime getPaymentDate(){
         return this.paymentDate;
     }
+    public void setPaymentDate(LocalDateTime paymentDate){
+        this.paymentDate = paymentDate;
+    }
     public String getPaymentType(){
         return this.paymentType;
     }
@@ -44,7 +47,7 @@ public class Payment {
         this.paymentType = paymentType;
     }
     public Pstatus getStatus(){
-        return this.getStatus();
+        return this.status;
     }
     public void setStatus(Pstatus status){
         this.status = status;
