@@ -10,8 +10,8 @@ import io.github.alirostom1.payflow.model.entity.Subscription;
 import io.github.alirostom1.payflow.model.enums.Sstatus;
 
 public interface SubscriptionServiceInterface{
-    FlexSub createFlexSub(String service,double price,LocalDateTime startDate,LocalDateTime endDate);
-    FixedSub createFixedSub(String service,double price,LocalDateTime startDate,int monthsEngaged);
+    FlexSub createFlexSub(String service,double price,LocalDateTime startDate,LocalDateTime endDate,String paymentType);
+    FixedSub createFixedSub(String service,double price,LocalDateTime startDate,int monthsEngaged,String paymentType);
     Optional<Subscription> findById(String id);
     List<Subscription> getAll();
     List<Subscription> getAllActive();
@@ -22,6 +22,10 @@ public interface SubscriptionServiceInterface{
     Subscription cancel(String id);
     Subscription suspend(String id);
     Subscription activate(String id);
+
+    void pay(String subId,String paymentType);
     
     boolean delete(String id);
+
+    double getTotalPaidAmount(String subId);
 }
