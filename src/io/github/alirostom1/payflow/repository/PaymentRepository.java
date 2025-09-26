@@ -47,7 +47,7 @@ public class PaymentRepository implements PaymentRepositoryInterface {
     @Override
     public Optional<Payment> findById(String id) throws SQLException {
         List<Payment> payments = this.findAll();
-        return payments.stream().filter(p -> p.getId() == id).findFirst();
+        return payments.stream().filter(p -> p.getId().equals(id)).findFirst();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class PaymentRepository implements PaymentRepositoryInterface {
                                     rs.getTimestamp("dueDate").toLocalDateTime(),
                                     rs.getTimestamp("paymentDate") != null ? 
                                     rs.getTimestamp("paymentDate").toLocalDateTime() : null,
-                                    rs.getString("payment_type"),
+                                    rs.getString("paiment_type"),
                                     Pstatus.valueOf(rs.getString("status")),
                                     rs.getString("subscription_id")
                                 );
@@ -97,7 +97,7 @@ public class PaymentRepository implements PaymentRepositoryInterface {
                                     rs.getTimestamp("dueDate").toLocalDateTime(),
                                     rs.getTimestamp("paymentDate") != null ? 
                                     rs.getTimestamp("paymentDate").toLocalDateTime() : null,
-                                    rs.getString("payment_type"),
+                                    rs.getString("paiment_type"),
                                     Pstatus.valueOf(rs.getString("status")),
                                     rs.getString("subscription_id")
                                 ); 
@@ -118,13 +118,29 @@ public class PaymentRepository implements PaymentRepositoryInterface {
                                     rs.getTimestamp("dueDate").toLocalDateTime(),
                                     rs.getTimestamp("paymentDate") != null ? 
                                     rs.getTimestamp("paymentDate").toLocalDateTime() : null,
-                                    rs.getString("payment_type"),
+                                    rs.getString("paiment_type"),
                                     Pstatus.valueOf(rs.getString("status")),
                                     rs.getString("subscription_id")
                                 );
                 payments.add(p);
             }
             return payments;
+        }
+    }
+    public boolean update(Payment p) throws SQLException {
+        String query = "UPDATE payments set dueDate = ?, paymentDate = ?, paiment_type = ?, status = ? where id = ?";
+        try(PreparedStatement stmt = connection.prepareStatement(query)){
+            stmt.setTimestamp(1, Timestamp.valueOf(p.getDueDate()));
+            if (p.getPaymentDate() != null) {
+                stmt.setTimestamp(2, Timestamp.valueOf(p.getPaymentDate()));
+            } else {
+                stmt.setNull(2, Types.TIMESTAMP);
+            }
+            stmt.setString(3, p.getPaymentType());
+            stmt.setString(4, p.getStatus().toString());
+            stmt.setString(5, p.getId());
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
         }
     }
     public boolean delete(String id) throws SQLException {

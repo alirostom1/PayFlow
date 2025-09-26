@@ -21,22 +21,7 @@ public class PaymentService implements PaymentServiceInterface {
     @Override
     public boolean create(Payment p) {
         try {
-            boolean created = paymentRepository.create(p);
-            if(created) {
-                Scheduler.schedule(()->{
-                    if(p.getStatus() == Pstatus.UNPAID){
-                        p.setStatus(Pstatus.OVERDUE);
-                        try{
-                            paymentRepository.updateStatus(p);
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                }, p.getDueDate().plusDays(3));
-                return true;
-            } else {
-                throw new RuntimeException("Failed to create payment in the repository.");
-            }
+            return paymentRepository.create(p);
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to create payment: " + e.getMessage(), e);
@@ -55,7 +40,10 @@ public class PaymentService implements PaymentServiceInterface {
     @Override
     public List<Payment> getBySubId(String id) {
         try {
-            return paymentRepository.findBySubscriptionId(id);
+            return paymentRepository.findBySubscriptionId(id)
+                                    .stream()
+                                    .sorted((s1,s2) -> s1.getDueDate().compareTo(s2.getDueDate()))
+                                    .collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException("Failed to get payments by subscription ID: " + e.getMessage(), e);
         }
@@ -85,20 +73,9 @@ public class PaymentService implements PaymentServiceInterface {
     }
 
     @Override
-    public boolean markAsPaid(String id) {
+    public boolean markAsPaid(Payment p) {
         try {
-            Optional<Payment> paymentOpt = paymentRepository.findById(id);
-            if (paymentOpt.isPresent()) {
-                if(paymentOpt.get().getStatus() == Pstatus.PAID) {
-                    throw new RuntimeException("Payment is already marked as PAID.");
-                }
-                Payment payment = paymentOpt.get();
-                payment.setStatus(Pstatus.PAID);
-                payment.setPaymentDate(LocalDateTime.now());
-                return paymentRepository.updateStatus(payment);
-            } else {
-                throw new RuntimeException("Payment not found with ID: " + id);
-            }
+                return paymentRepository.update(p);
         } catch (Exception e) {
             throw new RuntimeException("Failed to mark payment as paid: " + e.getMessage(), e);
         }
@@ -112,10 +89,53 @@ public class PaymentService implements PaymentServiceInterface {
             throw new RuntimeException("Failed to delete payment: " + e.getMessage(), e);
         }
     }
+    @Override
+    public boolean markAsOverdue(String id) {
+        try {
+            Optional<Payment> paymentOpt = paymentRepository.findById(id);
+            if (paymentOpt.isPresent()) {
+                if(paymentOpt.get().getStatus() == Pstatus.OVERDUE) {
+                    throw new RuntimeException("Payment is already marked as OVERDUE.");
+                }
+                Payment payment = paymentOpt.get();
+                payment.setStatus(Pstatus.OVERDUE);
+                return paymentRepository.updateStatus(payment);
+            } else {
+                throw new RuntimeException("Payment not found with ID: " + id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to mark payment as overdue: " + e.getMessage(), e);
+        }
+    }
 
     @Override
     public void generateMonthlyPayments() {
         
     }
 
+    public List<Payment> getLast5Payments(){
+        try {
+            return paymentRepository.findAll()
+                    .stream()
+                    .sorted((p1, p2) -> p2.getPaymentDate().compareTo(p1.getPaymentDate()))
+                    .limit(5)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get last 5 payments: " + e.getMessage(), e);
+        }
+    }
+    public List<Payment> getAllPayments(){
+        try {
+            return paymentRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get all payments: " + e.getMessage(), e);
+        }
+    }
+    public boolean update(Payment p){
+        try {
+            return paymentRepository.update(p);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update payment: " + e.getMessage(), e);
+        }
+    }
 }
