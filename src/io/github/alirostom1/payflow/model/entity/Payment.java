@@ -58,4 +58,12 @@ public class Payment {
     public void setSubId(String subId){
         this.subId = subId;
     }
+    public String toString(){
+        return "id: " + this.id + "\n" +
+                "due date: " + this.dueDate + "\n" +
+                "payment date: " + this.paymentDate + "\n" +
+                "payment type: " + this.paymentType + "\n" +
+                "status: " + this.status + "\n" +
+                "subcription id: " + this.subId + "\n";
+    }
 }

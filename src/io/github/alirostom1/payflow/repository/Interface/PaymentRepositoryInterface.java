@@ -12,6 +12,7 @@ public interface PaymentRepositoryInterface {
     Optional<Payment> findById(String id) throws SQLException;
     List<Payment> findAll() throws SQLException;
     boolean updateStatus(Payment p) throws SQLException;
+    boolean update(Payment p) throws SQLException;
     List<Payment> findByStatus(Pstatus status) throws SQLException;
     List<Payment> findBySubscriptionId(String subscriptionId) throws SQLException;
     boolean delete(String id) throws SQLException;

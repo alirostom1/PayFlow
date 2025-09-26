@@ -57,7 +57,7 @@ public class SubscriptionRepository implements SubscriptionRepositoryInterface{
     @Override
     public Optional<Subscription> findById(String id) throws SQLException{
         List<Subscription> subs = this.findAll();
-        Optional<Subscription> sub = subs.stream().filter(s -> s.getId() == id).findFirst();
+        Optional<Subscription> sub = subs.stream().filter(s -> s.getId().equals(id)).findFirst();
         return sub;
     }
 

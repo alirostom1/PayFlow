@@ -13,5 +13,4 @@ public class Scheduler {
         long delay = Duration.between(LocalDateTime.now(), runAt).toMillis();
         scheduler.schedule(task, delay, TimeUnit.MILLISECONDS);
     }
-    
 }

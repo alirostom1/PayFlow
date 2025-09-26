@@ -12,6 +12,9 @@ import io.github.alirostom1.payflow.service.PaymentService;
 import io.github.alirostom1.payflow.service.SubscriptionService;
 import io.github.alirostom1.payflow.service.Interface.PaymentServiceInterface;
 import io.github.alirostom1.payflow.service.Interface.SubscriptionServiceInterface;
+import io.github.alirostom1.payflow.ui.SubscriptionUI;
+import io.github.alirostom1.payflow.ui.MainMenuUI;
+import io.github.alirostom1.payflow.ui.PaymentUI;
 
 public class Main{
     public final static void main(String[] args){
@@ -20,6 +23,9 @@ public class Main{
         PaymentRepositoryInterface payRepo = new PaymentRepository(connection);
         PaymentServiceInterface payService = new PaymentService(payRepo);
         SubscriptionServiceInterface subService = new SubscriptionService(subRepo, payService);
-        subService.createFixedSub("Netflix", 10, LocalDateTime.now(), 2);
-    } 
+        SubscriptionUI subUI = new SubscriptionUI(subService);
+        PaymentUI payUI = new PaymentUI(payService, subService);
+        MainMenuUI mainMenu = new MainMenuUI(subUI,payUI);
+        mainMenu.run();
+    }
 }
