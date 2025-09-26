@@ -12,7 +12,7 @@ public class FixedSub extends Subscription{
         this.monthsEngaged = monthsEngaged;
     }
     public int getMonthsEngaged(){
-        return this.getMonthsEngaged();
+        return this.monthsEngaged;
     }
     public void setMonthsEngaged(int monthsEngaged){
         this.monthsEngaged = monthsEngaged;
